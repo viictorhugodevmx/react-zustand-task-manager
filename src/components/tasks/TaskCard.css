@@ -80,3 +80,32 @@
     padding: 18px;
   }
 }
+
+.task-card__controles {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.task-card__avanzar {
+  padding: 9px 14px;
+  border: 1px solid var(--color-primario);
+  border-radius: 8px;
+  background: white;
+  color: var(--color-primario);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.task-card__avanzar:hover {
+  background: #eff6ff;
+}
+
+@media (max-width: 480px) {
+  .task-card__controles {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

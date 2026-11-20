@@ -2,7 +2,7 @@ import TaskCard from './TaskCard'
 
 import './TaskList.css'
 
-const TaskList = ({ tareas }) => {
+const TaskList = ({ tareas, onCambiarEstado }) => {
   const hayTareas = tareas.length > 0
 
   return (
@@ -13,7 +13,10 @@ const TaskList = ({ tareas }) => {
         <ul>
           {tareas.map((tarea) => (
             <li key={tarea.id}>
-              <TaskCard tarea={tarea} />
+              <TaskCard
+                tarea={tarea}
+                onCambiarEstado={onCambiarEstado}
+              />
             </li>
           ))}
         </ul>
@@ -25,9 +28,7 @@ const TaskList = ({ tareas }) => {
 
           <h3>No hay tareas disponibles</h3>
 
-          <p>
-            Cuando tengas tareas, aparecerán aquí.
-          </p>
+          <p>Cuando tengas tareas, aparecerán aquí.</p>
         </div>
       )}
     </section>

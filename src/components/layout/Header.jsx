@@ -1,6 +1,6 @@
 import './Header.css'
 
-const Header = ({ titulo, subtitulo }) => {
+const Header = ({ titulo, subtitulo, onNuevaTarea }) => {
   return (
     <header className="header">
       <div>
@@ -8,7 +8,11 @@ const Header = ({ titulo, subtitulo }) => {
         <p>{subtitulo}</p>
       </div>
 
-      <button type="button" className="header__boton">
+      <button
+        type="button"
+        className="header__boton"
+        onClick={onNuevaTarea}
+      >
         + Nueva tarea
       </button>
     </header>

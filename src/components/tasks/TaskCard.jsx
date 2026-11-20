@@ -12,22 +12,23 @@ const etiquetasPrioridad = {
   baja: 'Baja',
 }
 
-const TaskCard = ({ tarea }) => {
+const TaskCard = ({ tarea, onCambiarEstado }) => {
   const {
+    id,
     titulo,
     descripcion,
     estado,
     prioridad,
   } = tarea
 
+  const puedeAvanzar = estado !== 'completada'
+
   return (
     <article className="task-card">
       <div className="task-card__contenido">
         <h3>{titulo}</h3>
 
-        {descripcion && (
-          <p>{descripcion}</p>
-        )}
+        {descripcion && <p>{descripcion}</p>}
 
         <span
           className={`task-card__prioridad task-card__prioridad--${prioridad}`}
@@ -36,11 +37,24 @@ const TaskCard = ({ tarea }) => {
         </span>
       </div>
 
-      <span
-        className={`task-card__estado task-card__estado--${estado}`}
-      >
-        {etiquetasEstado[estado]}
-      </span>
+      <div className="task-card__controles">
+        <span
+          className={`task-card__estado task-card__estado--${estado}`}
+        >
+          {etiquetasEstado[estado]}
+        </span>
+
+        {puedeAvanzar && onCambiarEstado && (
+          <button
+            type="button"
+            className="task-card__avanzar"
+            onClick={() => onCambiarEstado(id)}
+            aria-label={`Avanzar estado de ${titulo}`}
+          >
+            Avanzar estado
+          </button>
+        )}
+      </div>
     </article>
   )
 }
