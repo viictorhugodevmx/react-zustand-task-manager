@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import Header from './components/layout/Header'
 import StatsPanel from './components/stats/StatsPanel'
+import TaskReset from './components/reset/TaskReset'
 import TaskFilters from './components/filters/TaskFilters'
 import TaskSearch from './components/search/TaskSearch'
 import TaskSort from './components/sort/TaskSort'
@@ -39,10 +40,6 @@ const App = () => {
     (estado) => estado.cargarTareasIniciales,
   )
 
-  useEffect(() => {
-    cargarTareasIniciales()
-  }, [cargarTareasIniciales])
-
   const estadisticas = calcularEstadisticas(tareas)
 
   const tareasBuscadas = buscarTareas(tareas, busqueda)
@@ -68,6 +65,15 @@ const App = () => {
     cerrarFormulario()
   }
 
+  const restablecerTareas = () => {
+    cargarTareasIniciales()
+    setFormularioAbierto(false)
+    setBusqueda('')
+    setEstadoSeleccionado('todos')
+    setPrioridadSeleccionada('todas')
+    setOrdenSeleccionado('original')
+  }
+
   return (
     <main className="app">
       <div className="app__contenedor">
@@ -85,6 +91,8 @@ const App = () => {
         )}
 
         <StatsPanel estadisticas={estadisticas} />
+
+        <TaskReset onRestablecer={restablecerTareas} />
 
         <TaskSearch
           busqueda={busqueda}

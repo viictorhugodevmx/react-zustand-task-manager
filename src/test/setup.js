@@ -5,3 +5,10 @@ import { afterEach } from 'vitest'
 afterEach(() => {
   cleanup()
 })
+
+import { beforeEach } from 'vitest'
+import { useTareasStore } from '../stores/useTareasStore'
+
+beforeEach(() => {
+  useTareasStore.setState(useTareasStore.getInitialState(), true)
+})

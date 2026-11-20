@@ -14,7 +14,7 @@ describe('ResumenZustand', () => {
     render(<ResumenZustand />)
 
     expect(
-      screen.getByText('Total de tareas en Zustand: 0'),
+      screen.getByText('Total de tareas en Zustand: 3'),
     ).toBeInTheDocument()
   })
 
@@ -30,9 +30,9 @@ describe('ResumenZustand', () => {
     )
 
     expect(
-      screen.getByText('Total de tareas en Zustand: 1'),
+      screen.getByText('Total de tareas en Zustand: 4'),
     ).toBeInTheDocument()
 
-    expect(useTareasStore.getState().tareas).toHaveLength(1)
+    expect(useTareasStore.getState().tareas).toHaveLength(4)
   })
 })

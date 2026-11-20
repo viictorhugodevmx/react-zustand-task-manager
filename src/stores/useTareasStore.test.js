@@ -1,5 +1,6 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { tareasIniciales } from '../data/tareasIniciales'
 import { useTareasStore } from './useTareasStore'
 
 const tareaEjemplo = {
@@ -9,13 +10,14 @@ const tareaEjemplo = {
   fechaLimite: '',
 }
 
-afterEach(() => {
+beforeEach(() => {
   useTareasStore.setState({ tareas: [] })
 })
 
 describe('useTareasStore', () => {
-  it('inicia con un arreglo vacío de tareas', () => {
-    expect(useTareasStore.getState().tareas).toEqual([])
+  it('define las tres tareas iniciales al crear el store', () => {
+    expect(useTareasStore.getInitialState().tareas)
+      .toEqual(tareasIniciales)
   })
 
   it('agrega una tarea con ID y estado pendiente', () => {
@@ -57,7 +59,6 @@ describe('useTareasStore', () => {
 
   it('notifica a los suscriptores cuando cambia el estado', () => {
     const suscriptor = vi.fn()
-
     const cancelarSuscripcion = useTareasStore.subscribe(suscriptor)
 
     useTareasStore.getState().agregarTarea(tareaEjemplo)
