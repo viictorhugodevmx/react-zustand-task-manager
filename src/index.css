@@ -6,6 +6,15 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+
+  --color-primario: #2563eb;
+  --color-primario-hover: #1d4ed8;
+  --color-texto: #0f172a;
+  --color-secundario: #64748b;
+  --color-borde: #e2e8f0;
+  --color-superficie: #ffffff;
+  --radio: 12px;
+  --sombra: 0 4px 16px rgba(15, 23, 42, 0.04);
 }
 
 * {
@@ -23,4 +32,15 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
 }

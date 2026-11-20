@@ -3,30 +3,28 @@ import { render, screen } from '@testing-library/react'
 
 import App from './App'
 
-describe('App', () => {
-  it('muestra el título principal de la aplicación', () => {
+describe('App Task Manager', () => {
+  it('muestra el título principal', () => {
     render(<App />)
 
     expect(
-      screen.getByRole('heading', {
-        name: 'Task Manager',
-      }),
+      screen.getByRole('heading', { name: 'Task Manager' }),
     ).toBeInTheDocument()
   })
 
-  it('muestra la descripción del laboratorio', () => {
+  it('muestra las estadísticas iniciales', () => {
     render(<App />)
 
     expect(
-      screen.getByText(/laboratorio de react y zustand/i),
+      screen.getByRole('region', { name: 'Estadísticas de tareas' }),
     ).toBeInTheDocument()
   })
 
-  it('renderiza el contenido dentro del elemento main', () => {
+  it('renderiza las tareas de ejemplo', () => {
     render(<App />)
 
     expect(
-      screen.getByRole('main'),
+      screen.getByText('Estudiar Zustand'),
     ).toBeInTheDocument()
   })
 })

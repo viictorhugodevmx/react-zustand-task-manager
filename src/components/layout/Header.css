@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(28px, 4vw, 36px);
+  letter-spacing: -0.8px;
+}
+
+.header p {
+  margin: 0;
+  color: var(--color-secundario);
+  font-size: 15px;
+}
+
+.header__boton {
+  padding: 13px 20px;
+  border: none;
+  border-radius: var(--radio);
+  background-color: var(--color-primario);
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.header__boton:hover {
+  background-color: var(--color-primario-hover);
+}
+
+@media (max-width: 640px) {
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .header__boton {
+    width: 100%;
+  }
+}
