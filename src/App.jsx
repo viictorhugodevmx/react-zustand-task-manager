@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Header from './components/layout/Header'
 import StatsPanel from './components/stats/StatsPanel'
@@ -7,73 +7,39 @@ import TaskList from './components/tasks/TaskList'
 import TaskForm from './components/forms/TaskForm'
 
 import { calcularEstadisticas } from './utils/calcularEstadisticas'
+import { useTareasStore } from './stores/useTareasStore'
 
 import './App.css'
 
-const tareasIniciales = [
-  {
-    id: 1,
-    titulo: 'Preparar entrevista técnica',
-    descripcion: 'Repasar fundamentos de React.',
-    estado: 'pendiente',
-    prioridad: 'alta',
-    fechaLimite: '',
-  },
-  {
-    id: 2,
-    titulo: 'Estudiar Zustand',
-    descripcion: 'Comprender stores, acciones y selectores.',
-    estado: 'en-progreso',
-    prioridad: 'media',
-    fechaLimite: '',
-  },
-  {
-    id: 3,
-    titulo: 'Revisar componentes React',
-    descripcion: '',
-    estado: 'completada',
-    prioridad: 'baja',
-    fechaLimite: '',
-  },
-]
-
-const siguientesEstados = {
-  pendiente: 'en-progreso',
-  'en-progreso': 'completada',
-  completada: 'completada',
-}
-
 const App = () => {
-  const [tareas, setTareas] = useState(tareasIniciales)
   const [formularioAbierto, setFormularioAbierto] = useState(false)
+
+  const tareas = useTareasStore((estado) => estado.tareas)
+
+  const agregarTarea = useTareasStore(
+    (estado) => estado.agregarTarea,
+  )
+
+  const cambiarEstado = useTareasStore(
+    (estado) => estado.cambiarEstado,
+  )
+
+  const cargarTareasIniciales = useTareasStore(
+    (estado) => estado.cargarTareasIniciales,
+  )
+
+  useEffect(() => {
+    cargarTareasIniciales()
+  }, [cargarTareasIniciales])
 
   const estadisticas = calcularEstadisticas(tareas)
 
   const abrirFormulario = () => setFormularioAbierto(true)
   const cerrarFormulario = () => setFormularioAbierto(false)
 
-  const agregarTarea = (datos) => {
-    const nuevaTarea = {
-      ...datos,
-      id: crypto.randomUUID(),
-      estado: 'pendiente',
-    }
-
-    setTareas((anteriores) => [...anteriores, nuevaTarea])
+  const guardarTarea = (datos) => {
+    agregarTarea(datos)
     cerrarFormulario()
-  }
-
-  const cambiarEstado = (id) => {
-    setTareas((anteriores) =>
-      anteriores.map((tarea) =>
-        tarea.id === id
-          ? {
-              ...tarea,
-              estado: siguientesEstados[tarea.estado],
-            }
-          : tarea,
-      ),
-    )
   }
 
   return (
@@ -88,7 +54,7 @@ const App = () => {
         {formularioAbierto && (
           <TaskForm
             onCerrar={cerrarFormulario}
-            onGuardar={agregarTarea}
+            onGuardar={guardarTarea}
           />
         )}
 
