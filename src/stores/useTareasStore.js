@@ -56,6 +56,63 @@ export const useTareasStore = create(
         })
       },
 
+      editarTarea: (id, cambios) => {
+        const camposEditables = [
+          'titulo',
+          'descripcion',
+          'prioridad',
+          'fechaLimite',
+        ]
+
+        set((estado) => {
+          const tareaActual = estado.tareas.find(
+            (tarea) => tarea.id === id,
+          )
+
+          if (!tareaActual) return estado
+
+          const actualizaciones = Object.fromEntries(
+            camposEditables
+              .filter((campo) =>
+                Object.prototype.hasOwnProperty.call(cambios, campo),
+              )
+              .map((campo) => [campo, cambios[campo]]),
+          )
+
+          if (
+            Object.keys(actualizaciones).every(
+              (campo) => tareaActual[campo] === actualizaciones[campo],
+            )
+          ) {
+            return estado
+          }
+
+          return {
+            tareas: estado.tareas.map((tarea) =>
+              tarea.id === id
+                ? { ...tarea, ...actualizaciones }
+                : tarea,
+            ),
+          }
+        })
+      },
+
+      eliminarTarea: (id) => {
+        set((estado) => {
+          const existe = estado.tareas.some(
+            (tarea) => tarea.id === id,
+          )
+
+          if (!existe) return estado
+
+          return {
+            tareas: estado.tareas.filter(
+              (tarea) => tarea.id !== id,
+            ),
+          }
+        })
+      },
+
       obtenerTotal: () => get().tareas.length,
     }),
     {

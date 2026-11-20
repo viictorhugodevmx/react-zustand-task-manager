@@ -21,27 +21,26 @@ import './App.css'
 
 const App = () => {
   const [formularioAbierto, setFormularioAbierto] = useState(false)
+  const [tareaEnEdicionId, setTareaEnEdicionId] = useState(null)
   const [busqueda, setBusqueda] = useState('')
   const [estadoSeleccionado, setEstadoSeleccionado] = useState('todos')
   const [prioridadSeleccionada, setPrioridadSeleccionada] = useState('todas')
   const [ordenSeleccionado, setOrdenSeleccionado] = useState('original')
 
   const tareas = useTareasStore((estado) => estado.tareas)
-
-  const agregarTarea = useTareasStore(
-    (estado) => estado.agregarTarea,
-  )
-
-  const cambiarEstado = useTareasStore(
-    (estado) => estado.cambiarEstado,
-  )
-
+  const agregarTarea = useTareasStore((estado) => estado.agregarTarea)
+  const editarTarea = useTareasStore((estado) => estado.editarTarea)
+  const eliminarTarea = useTareasStore((estado) => estado.eliminarTarea)
+  const cambiarEstado = useTareasStore((estado) => estado.cambiarEstado)
   const cargarTareasIniciales = useTareasStore(
     (estado) => estado.cargarTareasIniciales,
   )
 
-  const estadisticas = calcularEstadisticas(tareas)
+  const tareaEnEdicion = tareas.find(
+    (tarea) => tarea.id === tareaEnEdicionId,
+  ) ?? null
 
+  const estadisticas = calcularEstadisticas(tareas)
   const tareasBuscadas = buscarTareas(tareas, busqueda)
 
   const tareasFiltradas = filtrarTareas(
@@ -57,17 +56,52 @@ const App = () => {
 
   const resumenVista = calcularResumenVista(tareas, tareasVisibles)
 
-  const abrirFormulario = () => setFormularioAbierto(true)
-  const cerrarFormulario = () => setFormularioAbierto(false)
+  const abrirFormulario = () => {
+    setTareaEnEdicionId(null)
+    setFormularioAbierto(true)
+  }
+
+  const abrirEdicion = (id) => {
+    setTareaEnEdicionId(id)
+    setFormularioAbierto(true)
+  }
+
+  const cerrarFormulario = () => {
+    setFormularioAbierto(false)
+    setTareaEnEdicionId(null)
+  }
 
   const guardarTarea = (datos) => {
-    agregarTarea(datos)
+    if (tareaEnEdicionId !== null) {
+      editarTarea(tareaEnEdicionId, datos)
+    } else {
+      agregarTarea(datos)
+    }
+
     cerrarFormulario()
+  }
+
+  const confirmarEliminacion = (id) => {
+    const tarea = tareas.find((item) => item.id === id)
+
+    if (!tarea) return
+
+    const confirmado = window.confirm(
+      `¿Eliminar la tarea "${tarea.titulo}"? Esta acción no se puede deshacer.`,
+    )
+
+    if (!confirmado) return
+
+    eliminarTarea(id)
+
+    if (tareaEnEdicionId === id) {
+      cerrarFormulario()
+    }
   }
 
   const restablecerTareas = () => {
     cargarTareasIniciales()
-    setFormularioAbierto(false)
+    cerrarFormulario()
     setBusqueda('')
     setEstadoSeleccionado('todos')
     setPrioridadSeleccionada('todas')
@@ -85,6 +119,8 @@ const App = () => {
 
         {formularioAbierto && (
           <TaskForm
+            key={tareaEnEdicionId ?? 'nueva'}
+            tareaInicial={tareaEnEdicion}
             onCerrar={cerrarFormulario}
             onGuardar={guardarTarea}
           />
@@ -116,6 +152,8 @@ const App = () => {
         <TaskList
           tareas={tareasVisibles}
           onCambiarEstado={cambiarEstado}
+          onEditar={abrirEdicion}
+          onEliminar={confirmarEliminacion}
         />
       </div>
     </main>

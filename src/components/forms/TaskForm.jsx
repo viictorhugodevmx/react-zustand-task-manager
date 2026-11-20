@@ -11,8 +11,24 @@ const valoresIniciales = {
   fechaLimite: '',
 }
 
-const TaskForm = ({ onCerrar, onGuardar }) => {
-  const [formulario, setFormulario] = useState(valoresIniciales)
+const obtenerValoresFormulario = (tareaInicial) => ({
+  titulo: tareaInicial?.titulo ?? valoresIniciales.titulo,
+  descripcion: tareaInicial?.descripcion ?? valoresIniciales.descripcion,
+  prioridad: tareaInicial?.prioridad ?? valoresIniciales.prioridad,
+  fechaLimite: tareaInicial?.fechaLimite ?? valoresIniciales.fechaLimite,
+})
+
+const TaskForm = ({
+  onCerrar,
+  onGuardar,
+  tareaInicial = null,
+}) => {
+  const esEdicion = tareaInicial !== null
+
+  const [formulario, setFormulario] = useState(() =>
+    obtenerValoresFormulario(tareaInicial),
+  )
+
   const [errores, setErrores] = useState({})
 
   const manejarCambio = (evento) => {
@@ -54,7 +70,9 @@ const TaskForm = ({ onCerrar, onGuardar }) => {
       aria-labelledby="task-form-titulo"
     >
       <div className="task-form__encabezado">
-        <h2 id="task-form-titulo">Nueva tarea</h2>
+        <h2 id="task-form-titulo">
+          {esEdicion ? 'Editar tarea' : 'Nueva tarea'}
+        </h2>
 
         <button
           type="button"
@@ -67,7 +85,9 @@ const TaskForm = ({ onCerrar, onGuardar }) => {
       </div>
 
       <p className="task-form__descripcion">
-        Completa la información de tu nueva tarea.
+        {esEdicion
+          ? 'Actualiza la información de tu tarea.'
+          : 'Completa la información de tu nueva tarea.'}
       </p>
 
       <form onSubmit={manejarEnvio} noValidate>
@@ -114,7 +134,9 @@ const TaskForm = ({ onCerrar, onGuardar }) => {
               rows={4}
               aria-invalid={Boolean(errores.descripcion)}
               aria-describedby={
-                errores.descripcion ? 'error-descripcion' : undefined
+                errores.descripcion
+                  ? 'error-descripcion'
+                  : undefined
               }
             />
 
@@ -142,7 +164,9 @@ const TaskForm = ({ onCerrar, onGuardar }) => {
                 onChange={manejarCambio}
                 aria-invalid={Boolean(errores.prioridad)}
                 aria-describedby={
-                  errores.prioridad ? 'error-prioridad' : undefined
+                  errores.prioridad
+                    ? 'error-prioridad'
+                    : undefined
                 }
               >
                 <option value="baja">Baja</option>
@@ -174,7 +198,9 @@ const TaskForm = ({ onCerrar, onGuardar }) => {
                 onChange={manejarCambio}
                 aria-invalid={Boolean(errores.fechaLimite)}
                 aria-describedby={
-                  errores.fechaLimite ? 'error-fecha' : undefined
+                  errores.fechaLimite
+                    ? 'error-fecha'
+                    : undefined
                 }
               />
 
@@ -204,7 +230,7 @@ const TaskForm = ({ onCerrar, onGuardar }) => {
             type="submit"
             className="task-form__validar"
           >
-            Guardar tarea
+            {esEdicion ? 'Guardar cambios' : 'Guardar tarea'}
           </button>
         </div>
       </form>

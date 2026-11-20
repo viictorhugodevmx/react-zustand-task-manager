@@ -12,7 +12,7 @@ const etiquetasPrioridad = {
   baja: 'Baja',
 }
 
-const TaskCard = ({ tarea, onCambiarEstado }) => {
+const TaskCard = ({ tarea, onCambiarEstado, onEditar, onEliminar }) => {
   const {
     id,
     titulo,
@@ -43,6 +43,28 @@ const TaskCard = ({ tarea, onCambiarEstado }) => {
         >
           {etiquetasEstado[estado]}
         </span>
+
+        {onEditar && (
+          <button
+            type="button"
+            className="task-card__editar"
+            onClick={() => onEditar(id)}
+            aria-label={`Editar ${titulo}`}
+          >
+            Editar tarea
+          </button>
+        )}
+
+        {onEliminar && (
+          <button
+            type="button"
+            className="task-card__eliminar"
+            onClick={() => onEliminar(id)}
+            aria-label={`Eliminar ${titulo}`}
+          >
+            Eliminar tarea
+          </button>
+        )}
 
         {puedeAvanzar && onCambiarEstado && (
           <button

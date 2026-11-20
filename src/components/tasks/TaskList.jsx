@@ -2,7 +2,7 @@ import TaskCard from './TaskCard'
 
 import './TaskList.css'
 
-const TaskList = ({ tareas, onCambiarEstado }) => {
+const TaskList = ({ tareas, onCambiarEstado, onEditar, onEliminar }) => {
   const hayTareas = tareas.length > 0
 
   return (
@@ -16,6 +16,8 @@ const TaskList = ({ tareas, onCambiarEstado }) => {
               <TaskCard
                 tarea={tarea}
                 onCambiarEstado={onCambiarEstado}
+                onEditar={onEditar}
+                onEliminar={onEliminar}
               />
             </li>
           ))}

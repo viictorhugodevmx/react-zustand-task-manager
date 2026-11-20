@@ -109,3 +109,45 @@
     justify-content: flex-start;
   }
 }
+
+.task-card__editar {
+  padding: 9px 14px;
+  border: 1px solid #64748b;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.task-card__editar:hover {
+  background: #64748b18;
+}
+
+.task-card__editar:focus-visible {
+  outline: 3px solid #64748b;
+  outline-offset: 3px;
+}
+
+.task-card__eliminar {
+  padding: 9px 14px;
+  border: 1px solid #b45353;
+  border-radius: 8px;
+  background: transparent;
+  color: #b45353;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.task-card__eliminar:hover {
+  background: #b4535312;
+}
+
+.task-card__eliminar:focus-visible {
+  outline: 3px solid #b45353;
+  outline-offset: 3px;
+}
